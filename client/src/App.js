@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import Home from './views/Home';
 import NewRecipe from './views/NewRecipe';
+import DetailRecipe from './views/DetailRecipe';
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
             </Route>
             <Route path="/edit/:id">
               <NewRecipe />
+            </Route>
+            <Route path="/detail/:id">
+              <DetailRecipe />
             </Route>
             <Route path="/">
               <Home />

@@ -48,7 +48,7 @@ const Home = () => {
                                 <td>{recipe.cook_time}</td>
                                 <td>
                                     <Link to={`/edit/${recipe._id}`}>Editar</Link>
-                                    {/* <button onClick={deleteRecipe(recipe._id)}>Eliminar</button> */}
+                                    <Link to={`/detail/${recipe._id}`}>Ver detalle</Link>
                                 </td>
                             </tr>)
                             )}
