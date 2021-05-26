@@ -15,7 +15,7 @@ const RecipeSchema = new mongoose.Schema({
         minlength: [3, "Receta debe tener mínimo de 3 caracteres"]
     },
     cook_time: {
-        type: Number,
+        type: String,
         required: [true, "Receta debe tener los pasos a seguir"],
     }
 

@@ -13,15 +13,20 @@ module.exports.findOneSingleRecipe = (req, res) => {
 };
 
 module.exports.createNewRecipe = (req, res) => {
-    Recipe.create(req.body)
+    console.log("🚀 ~ file: recipes.controller.js ~ line 19 ~ req.body.data", req.body.data)
+    Recipe.create(req.body.data)
         .then(newlyCreatedRecipe => res.json({ recipe: newlyCreatedRecipe }))
-        // .catch(err => res.json({ message: "Something went wrong", error: err }));
-        .catch(err => res.status(400).json(err))
+        .catch(err => {
+        console.log("🚀 ~ file: recipes.controller.js ~ line 19 ~ err", err)
+            return res.status(400).json(err)
+        })
 };
 
 module.exports.updateExistingRecipe = (req, res) => {
-    Recipe.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-        .then(updatedRecipe => res.json({ recipe: updatedRecipe }))
+    Recipe.findOneAndUpdate({ _id: req.params.id }, req.body.data, { new: true })
+        .then(updatedRecipe => {
+            return res.json({ recipe: updatedRecipe })
+        })
         .catch(err => res.json({ message: "Something went wrong", error: err }));
 };
 

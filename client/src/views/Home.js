@@ -15,6 +15,11 @@ const Home = () => {
         }
     }
 
+    // const deleteRecipe = async (id) => {
+    //     await axios.delete(`http://localhost:8000/api/recipes/delete/${id}`);
+
+    // }
+
     useEffect(() => {
         getRecipes()
     }, [])
@@ -41,7 +46,10 @@ const Home = () => {
                                 <td>{recipe.ingredients}</td>
                                 <td>{recipe.steps}</td>
                                 <td>{recipe.cook_time}</td>
-                                <td><Link>Editar</Link></td>
+                                <td>
+                                    <Link to={`/edit/${recipe._id}`}>Editar</Link>
+                                    {/* <button onClick={deleteRecipe(recipe._id)}>Eliminar</button> */}
+                                </td>
                             </tr>)
                             )}
                         </tbody>

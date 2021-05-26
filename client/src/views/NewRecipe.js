@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useParams, useHistory } from "react-router-dom";
 const NewRecipe = () => {
+    let history = useHistory();
+    let { id } = useParams();
     const [formRecipe, setFormRecipe] = useState({
         title: '',
         ingredients: [],
@@ -9,18 +11,38 @@ const NewRecipe = () => {
         steps: ''
     })
 
-    const submitRecipe = async (e) => {
+    useEffect(() => {
+        console.log("🚀 ~ file: NewRecipe.js ~ line 20 ~ useEffect ~ id", id)
+        id && getRecipe();
+    }, [])
+
+    const getRecipe = async () => {
         try {
-            e.preventDefault();
-            console.log("🚀 ~ file: NewRecipe.js ~ line 20 ~ submitRecipe ~ e", e)
-            let ingredientsArr = await formRecipe.ingredients.split(',');
-            let postNewRecipe = await axios.post('http://localhost:8000/api/recipes/new', {
-                data: {
-                    ...formRecipe, ingredients: ingredientsArr
-                }
+            const data = await axios.get(`http://localhost:8000/api/recipes/${id}`);
+            console.log("🚀 ~ file: NewRecipe.js ~ line 20 ~ getRecipe ~ data", data.data.recipe)
+            setFormRecipe({
+                title: data.data.recipe.title,
+                ingredients: data.data.recipe.ingredients,
+                cook_time: data.data.recipe.cook_time,
+                steps: data.data.recipe.steps
+            })
+
+        } catch (err) {
+            return err;
+        }
+    }
+
+    const submitRecipe = async (e) => {
+        e.preventDefault();
+        try {
+            let ingredientsArr = await Array.isArray(formRecipe.ingredients) ? formRecipe.ingredients : formRecipe.ingredients.split(',');
+            !id ? await axios.post('http://localhost:8000/api/recipes/new', {
+                data: { ...formRecipe, ingredients: ingredientsArr }
+            }) : await axios.put(`http://localhost:8000/api/recipes/update/${id}`, {
+                data: { ...formRecipe, ingredients: ingredientsArr }
             });
-            console.log("🚀 ~ file: NewRecipe.js ~ line 26 ~ submitRecipe ~ postNewRecipe", postNewRecipe)
-            return postNewRecipe;
+            history.push('/')
+
         } catch (err) {
             return err;
         }
