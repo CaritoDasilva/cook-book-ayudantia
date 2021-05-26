@@ -6,9 +6,8 @@ const RecipeSchema = new mongoose.Schema({
         minlength: [3, "Receta debe tener mínimo de 3 caracteres"]
     },
     ingredients: { 
-        type: String,
-        required: [true, "Receta debe tener ingredientes"],
-        minlength: [3, "Ingredientes debe tener mínimo de 3 caracteres"]
+        type: Array,
+        required: [true, "Receta debe tener ingredientes"],        
     },
     steps: {
         type: String,

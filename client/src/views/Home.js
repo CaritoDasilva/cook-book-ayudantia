@@ -1,25 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import axios from 'axios';
-
+import { Link } from "react-router-dom";
 const Home = () => {
-    const [recipes, setRecipes] = useState([]);
+    const [recipes, setRecipes] = useState();
 
     const getRecipes = async () => {
-    }
-
-    useEffect(async () => {
         try {
             let data = await axios.get('http://localhost:8000/api/recipes/');
-            setRecipes(data.data);
+            setRecipes(data.data.recipes);
 
         } catch (err) {
             return err;
         }
+    }
+
+    useEffect(() => {
+        getRecipes()
     }, [])
 
     const showTable = () => {
-        return recipes.length > 0 && recipes?.map(recipe => (<h1>Hola</h1>))
+        if (recipes) {
+            return (
+                <>
+                    <Table striped bordered hover variant="dark">
+                        <thead>
+                            <tr>
+                                <th>Título receta</th>
+                                <th>Ingredientes</th>
+                                <th>Pasos a seguir:</th>
+                                <th>Tiempo de cocción</th>
+                                <th>Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {recipes.map((recipe, index) =>
+                            (<tr key={recipe._id}>
+                                <td>{recipe.title}</td>
+                                <td>{recipe.ingredients}</td>
+                                <td>{recipe.steps}</td>
+                                <td>{recipe.cook_time}</td>
+                                <td><Link>Editar</Link></td>
+                            </tr>)
+                            )}
+                        </tbody>
+                    </Table>
+                    <Link to="/new-recipe">Agregar receta</Link>
+                </>
+            )
+        }
+        else {
+            return (<>
+                No hay recipes aun
+            </>)
+        }
     }
 
 
@@ -28,48 +63,7 @@ const Home = () => {
             <h1>Mis recetas:</h1>
             <div className="table-container">
                 {showTable()}
-                {/* 
-                    <Table striped bordered hover variant="dark">
-                    <thead>
-                        <tr>
-                            <th>Título receta</th>
-                            <th>Ingredientes</th>
-                            <th>Pasos a seguir:</th>
-                            <th>Tiempo de cocción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {recipes > 0 && recipes?.map(recipe => {
-                            { console.log("🚀 ~ file: Home.js ~ line 50 ~ Home ~ recipes", recipe) }
 
-                            return (
-                                <tr key={recipe._id}>
-                                    <td>{recipe.title}</td>
-                                    <td>{recipe.ingredients}</td>
-                                    <td>{recipe.steps}</td>
-                                    <td>{recipe.cook_time}</td>
-                                </tr>
-                            )
-                        })} */}
-                {/* <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td colSpan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr> */}
-                {/* </tbody>
-                </Table> */}
             </div >
         </div >
     )
